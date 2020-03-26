@@ -21,11 +21,11 @@ void main(List<String> arguments) {
   stdout.writeln('>> ${argResults.rest}');
 }
 
-void generateImage(value) {
+void generateImage(value) async {
   final image = decodePng(File('./sample.png').readAsBytesSync());
   // fill(image, getColor(0, 0, 255));
-
-  drawStringCentered(image, arial_48, value ?? '');
+  final file = await File('../assets/font.zip').readAsBytes();
+  drawStringCentered(image, BitmapFont.fromZip(file), value ?? '');
   // drawLine(image, 0, 0, 320, 240, getColor(255, 0, 0), thickness: 3);
   // gaussianBlur(image, 10);
   File('icon.png').writeAsBytesSync(encodePng(image));
