@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:flutter_app_icon/assets/base_image.dart';
+import 'package:flutter_app_icon/assets/font_asset.dart';
 import 'package:image/image.dart';
 
 int calculate() {
@@ -22,15 +24,13 @@ void main(List<String> arguments) {
 }
 
 void generateImage(value) async {
-  final image = decodePng(File('./sample.png').readAsBytesSync());
+  final bytes = ImageAssets.baseImage;
+  final image = decodePng(bytes);
   // fill(image, getColor(0, 0, 255));
-  final file = await File('../assets/font.zip').readAsBytes();
+  final file = FontAsset.robotoFont;
   drawStringCentered(image, BitmapFont.fromZip(file), value ?? '');
-  // drawLine(image, 0, 0, 320, 240, getColor(255, 0, 0), thickness: 3);
-  // gaussianBlur(image, 10);
-  File('icon.png').writeAsBytesSync(encodePng(image));
 
-  stdout.writeln('>>>>>>>>>!! $value');
+  File('some.png').writeAsBytesSync(encodePng(image));
 }
 
 void sample(List<String> arguments) {
