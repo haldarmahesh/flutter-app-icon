@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:args/args.dart';
@@ -9,12 +8,12 @@ import 'package:flutter_app_icon/commands/option/output_option.dart';
 import 'package:flutter_app_icon/image_utils.dart';
 
 ArgResults argResults;
+final android = AndroidPlatform();
+final imageUtils = ImageUtils(android);
+final generateCommand = GenerateCommand();
+final labelOption = generateCommand.getOption<LabelOption>();
+final outputOption = generateCommand.getOption<OutputOption>();
 void main(List<String> arguments) {
-  final android = AndroidPlatform();
-  final imageUtils = ImageUtils(android);
-  final generateCommand = GenerateCommand();
-  final labelOption = generateCommand.getOption<LabelOption>();
-  final outputOption = generateCommand.getOption<OutputOption>();
   final generateOptionParser = ArgParser()
     ..addOption(
       labelOption.name,
@@ -23,18 +22,27 @@ void main(List<String> arguments) {
     ..addOption(
       outputOption.name,
       abbr: outputOption.abbr,
-    );
-  final parser = ArgParser()
+    )
+    ..addFlag('help',
+        abbr: 'h', negatable: false, help: 'Print this usage information.');
+  final commandParser = ArgParser()
     ..addCommand(
       generateCommand.name,
       generateOptionParser,
     );
-  argResults = parser.parse(arguments);
-
+  argResults = commandParser.parse(arguments);
   final generateOptionResult = generateOptionParser.parse(arguments);
+  if (generateOptionResult['help'] as bool) {
+    print(generateOptionParser.usage);
+    return;
+  }
 
-  String label = generateOptionResult[labelOption.name];
-  String outputFileName = generateOptionResult[outputOption.name] ?? 'icon';
+  generateIcon(generateOptionResult);
+}
+
+void generateIcon(ArgResults parsedResult) {
+  String label = parsedResult[labelOption.name];
+  String outputFileName = parsedResult[outputOption.name] ?? 'icon';
 
   imageUtils.generateIcon(label, outputFileName);
 }
