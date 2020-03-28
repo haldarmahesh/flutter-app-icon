@@ -8,20 +8,16 @@ import 'package:image/image.dart';
 class ImageUtils {
   AndroidPlatform androidPlatform;
   ImageUtils(this.androidPlatform);
-  void generateImage(value, outputName) async {
+  void generateIcon(label, outputName) async {
     final bytes = ImageAssets.baseImage;
     final image = decodePng(bytes);
     final file = FontAsset.robotoFont;
-    drawStringCentered(image, BitmapFont.fromZip(file), value ?? '');
+    drawStringCentered(image, BitmapFont.fromZip(file), label ?? '');
     final iconName = '$outputName.png';
     File(iconName).writeAsBytesSync(encodePng(image));
   }
 
-  void generateIconWithDefaultName(value) async {
-    await generateImage(value, 'icon');
-  }
-
-  void generateForAndroid(value) async {
+  void generateForAndroid(label) async {
     String outputName;
     try {
       outputName = await androidPlatform.getIconNameFromXml();
@@ -34,6 +30,6 @@ class ImageUtils {
           'Couldn\'t read the icon name from manifest file, hence adding a default name');
       outputName = 'icon';
     }
-    generateImage(value, outputName);
+    generateIcon(label, outputName);
   }
 }
