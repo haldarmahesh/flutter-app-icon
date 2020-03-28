@@ -8,7 +8,8 @@ import 'package:image/image.dart';
 class ImageUtils {
   AndroidPlatform androidPlatform;
   ImageUtils(this.androidPlatform);
-  void generateIcon(String label, String outputName, String topLabel) async {
+  void generateIcon(String label, String outputName, String topLabel,
+      String bottomLabel) async {
     final bytes = ImageAssets.baseImage;
     final image = decodePng(bytes);
     final file = FontAsset.robotoFont;
@@ -23,9 +24,14 @@ class ImageUtils {
       drawStringCentered(image, arial_48, topLabel, y: topLableYCordinate);
     }
 
-    if (false) {
+    if (bottomLabel != null) {
       fillRect(
           image, 0, image.height - 100, image.width, image.height, 0x5c5b5b70);
+      var bottomLableYCordinate = ((image.height - 100)) +
+          50 -
+          (arial_48.characters['U'.codeUnits[0]].height / 2).round();
+      drawStringCentered(image, arial_48, bottomLabel,
+          y: bottomLableYCordinate);
     }
     File(iconName).writeAsBytesSync(encodePng(image));
   }
@@ -43,6 +49,6 @@ class ImageUtils {
           'Couldn\'t read the icon name from manifest file, hence adding a default name');
       outputName = 'icon';
     }
-    generateIcon(label, outputName, '');
+    generateIcon(label, outputName, '', '');
   }
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:args/args.dart';
 import 'package:flutter_app_icon/android_platform_impl.dart';
 import 'package:flutter_app_icon/commands/generate_command.dart';
+import 'package:flutter_app_icon/commands/option/bottom_label.dart';
 import 'package:flutter_app_icon/commands/option/label_option.dart';
 import 'package:flutter_app_icon/commands/option/output_option.dart';
 import 'package:flutter_app_icon/commands/option/top_label_option.dart';
@@ -15,6 +16,7 @@ final generateCommand = GenerateCommand();
 final labelOption = generateCommand.getOption<LabelOption>();
 final outputOption = generateCommand.getOption<OutputOption>();
 final topLabelOption = generateCommand.getOption<TopLableOption>();
+final bottomLabelOption = generateCommand.getOption<BottomLabelOption>();
 
 void main(List<String> arguments) {
   final generateOptionParser = _getGenerateOptionParser();
@@ -59,6 +61,8 @@ ArgParser _getGenerateOptionParser() {
         abbr: outputOption.abbr, help: outputOption.help, valueHelp: '12312')
     ..addOption(topLabelOption.name,
         abbr: topLabelOption.abbr, help: topLabelOption.help)
+    ..addOption(bottomLabelOption.name,
+        abbr: bottomLabelOption.abbr, help: bottomLabelOption.help)
     ..addFlag('help',
         abbr: 'h', negatable: false, help: 'Print this usage information.');
 }
@@ -68,8 +72,8 @@ void generateIcon(ArgResults parsedResult) {
   String outputFileName = parsedResult[outputOption.name] ?? 'icon';
 
   String topLabel = parsedResult[topLabelOption.name];
-
-  imageUtils.generateIcon(label, outputFileName, topLabel);
+  String bottomLabel = parsedResult[bottomLabelOption.name];
+  imageUtils.generateIcon(label, outputFileName, topLabel, bottomLabel);
 }
 
 Future _handleError(String path) async {

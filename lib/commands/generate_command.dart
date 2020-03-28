@@ -1,4 +1,5 @@
 // import 'package:flutter_app_icon/commands/option/help_option.dart';
+import 'package:flutter_app_icon/commands/option/bottom_label.dart';
 import 'package:flutter_app_icon/commands/option/label_option.dart';
 import 'package:flutter_app_icon/commands/option/output_option.dart';
 import 'package:flutter_app_icon/commands/option/top_label_option.dart';
@@ -9,7 +10,8 @@ class GenerateCommand extends Command {
   final List<Option> _optionLists = [
     LabelOption(),
     OutputOption(),
-    TopLableOption()
+    TopLableOption(),
+    BottomLabelOption()
   ];
 
   @override
