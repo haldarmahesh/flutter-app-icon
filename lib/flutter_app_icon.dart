@@ -18,7 +18,8 @@ void main(List<String> arguments) {
       generateCommand.name,
       ArgParser()
         ..addOption(labelOption.name,
-            abbr: labelOption.abbr, callback: imageUtils.generateForAndroid),
+            abbr: labelOption.abbr,
+            callback: imageUtils.generateIconWithDefaultName),
     );
   argResults = parser.parse(arguments);
 

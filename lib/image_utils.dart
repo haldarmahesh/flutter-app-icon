@@ -17,6 +17,10 @@ class ImageUtils {
     File(iconName).writeAsBytesSync(encodePng(image));
   }
 
+  void generateIconWithDefaultName(value) async {
+    await generateImage(value, 'icon');
+  }
+
   void generateForAndroid(value) async {
     String outputName;
     try {
