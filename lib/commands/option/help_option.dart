@@ -6,4 +6,8 @@ class HelpOption implements Option {
 
   @override
   String get name => 'help';
+
+  @override
+  String get help =>
+      'The flag to show the help text and details of the options available.';
 }
