@@ -6,6 +6,9 @@ import 'package:flutter_app_icon/assets/font_asset.dart';
 import 'package:image/image.dart';
 
 class ImageUtils {
+  final _stripRectHeight = 100;
+  final _stripBgColor = 0x5c5b5b70;
+  final _labelFont = arial_48;
   AndroidPlatform androidPlatform;
   ImageUtils(this.androidPlatform);
   void generateIcon(String label, String outputName, String topLabel,
@@ -16,24 +19,34 @@ class ImageUtils {
     drawStringCentered(image, BitmapFont.fromZip(file), label ?? '');
 
     final iconName = '$outputName.png';
+    _drawTopLabel(topLabel, image);
+    _drawBottomLabel(bottomLabel, image);
+    File(iconName).writeAsBytesSync(encodePng(image));
+  }
 
+  void _drawTopLabel(String topLabel, Image image) {
     if (topLabel != null) {
-      fillRect(image, 0, 0, image.width, 100, 0x5c5b5b70);
-      var topLableYCordinate = (100 ~/ 2) -
-          (arial_48.characters['U'.codeUnits[0]].height / 2).round();
-      drawStringCentered(image, arial_48, topLabel, y: topLableYCordinate);
+      fillRect(image, 0, 0, image.width, _stripRectHeight, _stripBgColor);
+      var topLableYCordinate =
+          (_stripRectHeight ~/ 2) - (_getFontHeight() ~/ 2);
+      drawStringCentered(image, _labelFont, topLabel, y: topLableYCordinate);
     }
+  }
 
+  int _getFontHeight() {
+    return _labelFont.characters['U'.codeUnits[0]].height;
+  }
+
+  void _drawBottomLabel(String bottomLabel, Image image) {
     if (bottomLabel != null) {
-      fillRect(
-          image, 0, image.height - 100, image.width, image.height, 0x5c5b5b70);
-      var bottomLableYCordinate = ((image.height - 100)) +
-          50 -
-          (arial_48.characters['U'.codeUnits[0]].height / 2).round();
-      drawStringCentered(image, arial_48, bottomLabel,
+      fillRect(image, 0, image.height - _stripRectHeight, image.width,
+          image.height, _stripBgColor);
+      var bottomLableYCordinate = (image.height - _stripRectHeight) +
+          (_stripRectHeight ~/ 2) -
+          (_getFontHeight() ~/ 2);
+      drawStringCentered(image, _labelFont, bottomLabel,
           y: bottomLableYCordinate);
     }
-    File(iconName).writeAsBytesSync(encodePng(image));
   }
 
   void generateForAndroid(label) async {
