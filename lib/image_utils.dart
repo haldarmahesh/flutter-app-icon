@@ -13,7 +13,7 @@ class ImageUtils {
   ImageUtils(this.androidPlatform);
   void generateIcon(String label, String outputName, String topLabel,
       String bottomLabel) async {
-    final bytes = ImageAssets.baseImage;
+    final bytes = ImageAssets.iconOptionColor;
     final image = decodePng(bytes);
     final file = FontAsset.robotoFont;
     drawStringCentered(image, BitmapFont.fromZip(file), label ?? '');
