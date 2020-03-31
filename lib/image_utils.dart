@@ -8,7 +8,7 @@ import 'package:image/image.dart';
 class ImageUtils {
   final _stripRectHeight = 100;
   final _stripBgColor = 0x5c5b5b70;
-  final _labelFont = arial_48;
+  final _labelFont = BitmapFont.fromZip(FontAsset.labelFont);
   AndroidPlatform androidPlatform;
   ImageUtils(this.androidPlatform);
   void generateIcon(String label, String outputName, String topLabel,
@@ -19,22 +19,22 @@ class ImageUtils {
     drawStringCentered(image, BitmapFont.fromZip(file), label ?? '');
 
     final iconName = '$outputName.png';
-    _drawTopLabel(topLabel, image);
+    await _drawTopLabel(topLabel, image);
     _drawBottomLabel(bottomLabel, image);
     File(iconName).writeAsBytesSync(encodePng(image));
   }
 
-  void _drawTopLabel(String topLabel, Image image) {
+  void _drawTopLabel(String topLabel, Image image) async {
     if (topLabel != null) {
       fillRect(image, 0, 0, image.width, _stripRectHeight, _stripBgColor);
       var topLableYCordinate =
-          (_stripRectHeight ~/ 2) - (_getFontHeight() ~/ 2);
+          (_stripRectHeight ~/ 2) - (_getFontHeight(_labelFont) ~/ 2);
       drawStringCentered(image, _labelFont, topLabel, y: topLableYCordinate);
     }
   }
 
-  int _getFontHeight() {
-    return _labelFont.characters['U'.codeUnits[0]].height;
+  int _getFontHeight(labelFont) {
+    return labelFont.characters['U'.codeUnits[0]].height;
   }
 
   void _drawBottomLabel(String bottomLabel, Image image) {
@@ -43,7 +43,7 @@ class ImageUtils {
           image.height, _stripBgColor);
       var bottomLableYCordinate = (image.height - _stripRectHeight) +
           (_stripRectHeight ~/ 2) -
-          (_getFontHeight() ~/ 2);
+          (_getFontHeight(_labelFont) ~/ 2);
       drawStringCentered(image, _labelFont, bottomLabel,
           y: bottomLableYCordinate);
     }
