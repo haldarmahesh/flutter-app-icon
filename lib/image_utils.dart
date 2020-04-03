@@ -20,7 +20,7 @@ class ImageUtils {
 
     final iconName = '$outputName.png';
     await _drawTopLabel(topLabel, image);
-    _drawBottomLabel(bottomLabel, image);
+    await _drawBottomLabel(bottomLabel, image);
     File(iconName).writeAsBytesSync(encodePng(image));
   }
 
