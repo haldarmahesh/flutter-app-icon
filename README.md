@@ -1,7 +1,5 @@
 
 
-- Created dev branch, 10:00 am
-
 # Flutter app icon
 
 This package helps in creating flutter app icon for ios as well android.
