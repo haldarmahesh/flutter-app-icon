@@ -9,3 +9,4 @@ This package also helps in adding the labels on top and bottom of the icon.
 # Labels
 * Top label
 * Bottom label
+*
